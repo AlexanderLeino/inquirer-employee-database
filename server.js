@@ -1,3 +1,12 @@
+const express = require('express')
+const mysql = require('mysql2')
+const inquirer = require('inquirer')
+const app = express()
+
+const PORT = process.env.PORT || 3001
+
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
 // GIVEN a command-line application that accepts user input
 
 // WHEN I start the application
@@ -23,3 +32,8 @@
 
 // WHEN I choose to update an employee role
 // THEN I am prompted to select an employee to update and their new role and this information is updated in the database 
+
+
+app.listen(PORT, () => {
+    console.log(`Server is listening at http://localhost:${PORT}`)
+})
