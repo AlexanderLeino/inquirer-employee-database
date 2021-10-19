@@ -10,7 +10,7 @@ const Department = require('./classes/departmentClass')
 const inquirer = require('inquirer');
 const BaseOrm = require('./classes/baseClass');
 
-console.log(BaseOrm.getAll())
+
 // GIVEN a command-line application that accepts user input
 function initalizeApp () {
     // WHEN I start the application
@@ -26,7 +26,7 @@ function initalizeApp () {
     .then(answer => {
         switch(answer.whereTo) {
             case 'View All Departments':
-                BaseOrm.getAll()
+                
                 break;
 
             case 'View All Roles':
