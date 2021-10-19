@@ -1,16 +1,101 @@
-const express = require('express')
-const mysql = require('mysql2')
-const inquirer = require('inquirer')
-const app = express()
+//Questions for office Hours
+// In the readme it discusses breaking up functions into a seperate file. Is that something that you would recommend as well
+//In the documentation for the console table it discusses retrieving information using objects should I jsut use sequilizer.
+//Then for my class names should I just use three classes()
+//You might want to use a separate file that contains functions for performing specific SQL queries you'll need to use. A constructor function or class could be helpful for organizing these. You might also want to include a `seeds.sql` file to pre-populate your database, making the development of individual features much easier.
+// const BaseOrm = require('./classes/baseClass')
+// const Employee = require('./classes/employee')
+// const Roles = require('./classes/roleClass')
+const Department = require('./classes/departmentClass')
+const inquirer = require('inquirer');
+const BaseOrm = require('./classes/baseClass');
 
-const PORT = process.env.PORT || 3001
-
-app.use(express.json())
-app.use(express.urlencoded({extended:true}))
+console.log(BaseOrm.getAll())
 // GIVEN a command-line application that accepts user input
+function initalizeApp () {
+    // WHEN I start the application
+    // THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
+    inquirer.prompt( [
+        {
+            type: 'list',
+            name: 'whereTo',
+            message: 'Where would you like to go first?',
+            choices:['View All Departments', 'View All Roles', 'View All Employees', 'Add A Department', 'Add A Role', 'Add An Employee', 'Update An Employee Role']
+        }
+    ])
+    .then(answer => {
+        switch(answer.whereTo) {
+            case 'View All Departments':
+                BaseOrm.getAll()
+                break;
 
-// WHEN I start the application
-// THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
+            case 'View All Roles':
+               
+                break;
+
+            case 'View All Employees':
+               
+                break;
+
+            case 'Add A Department':
+                //I am prompted to enter the name of the department and that department is added to the database
+                inquirer.prompt( [
+                    {
+                        type: 'input',
+                        name: 'departmentName',
+                        message: 'What is the name of the department you would like to add to the database.'
+                    }
+                ])
+                break;
+
+            case 'Add A Role':
+               inquirer.prompt([
+                   {
+                       type:'input',
+                       name:'newRole',
+                       message:'What is the title for your new role?'
+
+                   },
+                   {
+                       type:'input', 
+                       name: 'salary',
+                       message: 'What is the salary for the newly created role?'
+                   },
+               ])
+                break;
+            
+            case 'Add An Employee':
+               inquirer.prompt( [
+                   {
+                       type:'input',
+                       name:'firstName',
+                       message:'Whats your new employees first name?'
+                   },
+
+                   {
+                    type:'input',
+                    name:'lastName',
+                    message:'Whats your new employees last name?'
+                    },
+
+                    {
+                        type:'input',
+                        name:'lastName',
+                        message:'Whats your new employees last name?'
+                    }
+
+
+               ])
+                break;
+
+            case 'Update An Employee Role':
+               
+                break;
+
+        }
+    })
+}
+
 
 // WHEN I choose to view all departments
 // THEN I am presented with a formatted table showing department names and department ids
@@ -32,8 +117,5 @@ app.use(express.urlencoded({extended:true}))
 
 // WHEN I choose to update an employee role
 // THEN I am prompted to select an employee to update and their new role and this information is updated in the database 
-
-
-app.listen(PORT, () => {
-    console.log(`Server is listening at http://localhost:${PORT}`)
-})
+ 
+initalizeApp()
