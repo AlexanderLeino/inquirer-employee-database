@@ -6,9 +6,9 @@
 // const BaseOrm = require('./classes/baseClass')
 // const Employee = require('./classes/employee')
 // const Roles = require('./classes/roleClass')
-const Department = require('./classes/departmentClass')
+const Department = require('./classes/addDataSet')
 const inquirer = require('inquirer');
-const BaseOrm = require('./classes/baseClass');
+const VAQueryConstructor = require('./classes/ViewAllQueriesConstructor');
 
 
 // GIVEN a command-line application that accepts user input
@@ -23,77 +23,102 @@ function initalizeApp () {
             choices:['View All Departments', 'View All Roles', 'View All Employees', 'Add A Department', 'Add A Role', 'Add An Employee', 'Update An Employee Role']
         }
     ])
-    .then(answer => {
-        switch(answer.whereTo) {
-            case 'View All Departments':
+    .then( async answer => {
+        try {
+            switch(answer.whereTo) {
+    
+                case 'View All Departments':
+                    let departmentQuery = await new VAQueryConstructor(`department`).getAll()
+                    console.table(departmentQuery[0])
+                    break;
+    
+                case 'View All Roles':
                 
-                break;
+                    let rolesQuery = await new VAQueryConstructor('roles').getAll()
+                    console.table(rolesQuery[0])
+                    break;
+    
+                case 'View All Employees':
+                    
+                    let employeeQuery = await new VAQueryConstructor('employee').getAll()
+                    console.table(employeeQuery[0])   
+                    break;
+    
+                case 'Add A Department':
+                    //I am prompted to enter the name of the department and that department is added to the database
+                    inquirer.prompt( [
+                        {
+                            type: 'input',
+                            name: 'departmentName',
+                            message: 'What is the name of the department you would like to add to the database.'
+                        }
+                    ]).then  (async answer => {
+                        try {
+                            let departmentQuery = await new AddDataSet('department', answer.name)
+                            console.table(departmentQuery)
+                        }
+                        catch(e) {
+                            console.log(e)
 
-            case 'View All Roles':
-               
-                break;
+                        }
+                        
 
-            case 'View All Employees':
-               
-                break;
-
-            case 'Add A Department':
-                //I am prompted to enter the name of the department and that department is added to the database
-                inquirer.prompt( [
-                    {
-                        type: 'input',
-                        name: 'departmentName',
-                        message: 'What is the name of the department you would like to add to the database.'
-                    }
-                ])
-                break;
-
-            case 'Add A Role':
-               inquirer.prompt([
-                   {
-                       type:'input',
-                       name:'newRole',
-                       message:'What is the title for your new role?'
-
-                   },
-                   {
-                       type:'input', 
-                       name: 'salary',
-                       message: 'What is the salary for the newly created role?'
-                   },
-               ])
-                break;
-            
-            case 'Add An Employee':
-               inquirer.prompt( [
-                   {
-                       type:'input',
-                       name:'firstName',
-                       message:'Whats your new employees first name?'
-                   },
-
-                   {
-                    type:'input',
-                    name:'lastName',
-                    message:'Whats your new employees last name?'
-                    },
-
-                    {
+                    })
+                    
+                    break;
+    
+                case 'Add A Role':
+                   inquirer.prompt([
+                       {
+                           type:'input',
+                           name:'newRole',
+                           message:'What is the title for your new role?'
+    
+                       },
+                       {
+                           type:'input', 
+                           name: 'salary',
+                           message: 'What is the salary for the newly created role?'
+                       },
+                   ])
+                    break;
+                
+                case 'Add An Employee':
+                   inquirer.prompt( [
+                       {
+                           type:'input',
+                           name:'firstName',
+                           message:'Whats your new employees first name?'
+                       },
+    
+                       {
                         type:'input',
                         name:'lastName',
                         message:'Whats your new employees last name?'
-                    }
-
-
-               ])
-                break;
-
-            case 'Update An Employee Role':
-               
-                break;
+                        },
+    
+                        {
+                            type:'input',
+                            name:'lastName',
+                            message:'Whats your new employees last name?'
+                        }
+    
+    
+                   ])
+                    break;
+    
+                case 'Update An Employee Role':
+                   
+                    break;
+    
+            }
 
         }
+        catch (e) {
+            throw e;            
+        }
     })
+
 }
 
 
