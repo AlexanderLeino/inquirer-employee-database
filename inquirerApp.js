@@ -6,7 +6,7 @@
 // const BaseOrm = require('./classes/baseClass')
 // const Employee = require('./classes/employee')
 // const Roles = require('./classes/roleClass')
-const Department = require('./classes/addDataSet')
+const addDataSet = require('./classes/addDataSet')
 const inquirer = require('inquirer');
 const VAQueryConstructor = require('./classes/ViewAllQueriesConstructor');
 
@@ -54,17 +54,14 @@ function initalizeApp () {
                         }
                     ]).then  (async answer => {
                         try {
-                            let departmentQuery = await new AddDataSet('department', answer.name)
-                            console.table(departmentQuery)
+                            let departmentQuery = await new addDataSet('department',answer.departmentName).addData()
+                        
                         }
                         catch(e) {
                             console.log(e)
 
                         }
-                        
-
                     })
-                    
                     break;
     
                 case 'Add A Role':
@@ -108,7 +105,20 @@ function initalizeApp () {
                     break;
     
                 case 'Update An Employee Role':
-                   
+                    inquirer.prompt( [
+                        {
+                            type: 'input',
+                            name: 'employeeID',
+                            message: 'What is the employees ID you are looking to update?'
+                        },
+
+                        {
+                            type: 'input',
+                            name: 'newRoleEmployee',
+                            message: 'What is the tile of the new role you would like to assign to the employee?'
+                        }
+
+                    ])
                     break;
     
             }
