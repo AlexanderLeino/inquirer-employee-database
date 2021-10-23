@@ -9,6 +9,7 @@
 const addDataSet = require('./classes/addDataSet')
 const inquirer = require('inquirer');
 const VAQueryConstructor = require('./classes/ViewAllQueriesConstructor');
+const Employee = require('./classes/employee')
 
 
 // GIVEN a command-line application that accepts user input
@@ -88,20 +89,21 @@ function initalizeApp () {
                            message:'Whats your new employees first name?'
                        },
     
-                       {
-                        type:'input',
-                        name:'lastName',
-                        message:'Whats your new employees last name?'
-                        },
-    
                         {
                             type:'input',
                             name:'lastName',
                             message:'Whats your new employees last name?'
                         }
-    
-    
-                   ])
+                   ]).then (async answer => {
+                       try {
+                           let {firstName , lastName} = answer
+                           let newEmployee = await new Employee(firstName,lastName).addEmployee(firstName,lastName)
+                       }
+                       catch(e) {
+                        console.log(e)
+                       }
+                   })
+                   
                     break;
     
                 case 'Update An Employee Role':

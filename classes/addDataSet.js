@@ -11,7 +11,7 @@ const connection = require("../Connection.module");
             this.tableName = tableName
             this.department_name = department_name
         }
-        async addData(){
+        async addDepartment(){
             return await connection.promise().query(
                 `INSERT INTO department (department_name)
                  VALUES (?)`,
@@ -23,7 +23,6 @@ const connection = require("../Connection.module");
                 
             )
         }
-    } 
-
+    }
 
 module.exports = AddDataSet
